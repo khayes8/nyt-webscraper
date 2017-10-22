@@ -5,23 +5,22 @@ var request = require("request");
 // First, tell the console what server.js is doing
 console.log("\n***********************************\n" +
             "Grabbing every thread name and link\n" +
-            "from reddit's webdev board:" +
+            "from history channels's news page:" +
             "\n***********************************\n");
-// Making a request for reddit's "webdev" board. The page's HTML is passed as the callback's third argument
-request("http://www.history.com/news", function(error, response, html) {
-  // Load the HTML into cheerio and save it to a variable
-  // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
+
+request("https://www.theonion.com/", function(error, response, html) {
   var $ = cheerio.load(html);
   // An empty array to save the data that we'll scrape
   var results = [];
   // With cheerio, find each p-tag with the "title" class
   // (i: iterator. element: the current element)
-  $(".article-row").each(function(i, element) {
+  $(".post-wrapper").each(function(i, element) {
     // Save the text of the element in a "title" variable
-    var title = $(element).text().replace(/(\t\n|\t|\n)/gm,"");;
+    var title = $(element).text().replace(/(\t\n|\t|\n)/gm,"");
     // In the currently selected element, look at its child elements (i.e., its a-tags),
     // then save the values for any "href" attributes that the child elements may have
     var link = $(element).children().attr("href");
+    //^^^ JS currently recognixes this variable but cannot defined it
     // Save these results in an object that we'll push into the results array we defined earlier
     results.push({
       title: title,
